@@ -1,6 +1,7 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <fstream>
+#include <istream>
 #include <cstdlib>
 #include "graph.h"
 using namespace std;
@@ -31,16 +32,17 @@ void graph:: out()
     cout << "\t"<< dpi;
     cout << "\t"<< depth << endl;
 }
-void graph::set_mas (ifstream &file)
+ifstream& operator>>(ifstream& file, graph& gr)
 {
-    getline(file,name);
-    file >> size;
-    getline(file,format);
-    file >> width;
-    file >> height;
-    file >> dpi;
-    file >> depth;
+    getline(file,gr.name);
+    file >> gr.size;
+    getline(file,gr.format);
+    file >> gr.width;
+    file >> gr.height;
+    file >> gr.dpi;
+    file >> gr.depth;
     file.get();
+    return file;
 }
 int graph::pl(graph gr[])
 {
@@ -59,15 +61,38 @@ int graph::pl(graph gr[])
     cout << "\nSamaya bolshaya ploshad u izobrazheniya:  "<<gr[num].name<<"\t";
     cout << max << endl;
 }
-void graph::get_into(ofstream &file)
+ofstream& operator<<(ofstream& file, const graph& gr)
 {
-    file << name <<endl;
-    file << size<< endl;
-    file << format<< endl;
-    file << width <<endl;
-    file << height <<endl;
-    file << dpi << endl;
-    file << depth << endl;
+    file << gr.name <<endl;
+    file << gr.size<< endl;
+    file << gr.format<< endl;
+    file << gr.width <<endl;
+    file << gr.height <<endl;
+    file << gr.dpi << endl;
+    file << gr.depth << endl;
+    return file;
+}
+ostream& operator<<(ostream& stream, const graph& picture)
+{
+stream << picture.name;
+stream << "\t" << picture.size;
+stream << "\t" << picture.format;
+stream << "\t" << picture.width;
+stream << "\t" << picture.height;
+stream << "\t" << picture.dpi;
+stream << "\t" << picture.depth;
+return stream;
+}
+istream& operator>>(istream& stream, graph& compare_picture)
+{
+getline(stream, compare_picture.name);
+stream >> compare_picture.size;
+getline(stream, compare_picture.format);
+stream >> compare_picture.width;
+stream >> compare_picture.height;
+stream >> compare_picture.dpi;
+stream >> compare_picture.depth;
+stream.get();
 }
 void  graph :: del_picture()
 {
@@ -78,4 +103,16 @@ void  graph :: del_picture()
     height=int();
     dpi=int();
     depth=int();
+}
+bool graph::operator==(graph compare_picture)
+{
+    if ((name!=compare_picture.name)||
+    (size!=compare_picture.size) ||
+    (format!=compare_picture.format) ||
+    (width!=compare_picture.width)  ||
+    (height!=compare_picture.height) ||
+    (dpi!=compare_picture.dpi)  ||
+    (depth!=compare_picture.depth))
+    return false;
+    return true;
 }

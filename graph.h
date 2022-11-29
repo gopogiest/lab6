@@ -6,6 +6,7 @@
 using std::string;
 using std::ifstream;
 using std::ofstream;
+using namespace std;
 class graph
 {
     private:
@@ -21,9 +22,13 @@ class graph
         graph (string, int, string,int, int,int,int);
         string get_name();
         void out();
-        void set_mas(ifstream &file);
         static int pl(graph[]);
-        void get_into(ofstream &file);
         void del_picture();
+
+        friend ofstream& operator<<(ofstream& file, const graph& gr);
+        friend ifstream& operator>>(ifstream& file,graph& gr);
+        friend ostream& operator<<(ostream& stream, const graph& picture);
+        friend istream& operator>>(istream& stream, graph& picture);
+        bool operator==(graph picture);
 };
 #endif

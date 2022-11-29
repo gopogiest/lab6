@@ -1,4 +1,4 @@
-#include <cstring>
+#include <string>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -22,7 +22,7 @@ graphstore :: ~graphstore()
     cout << "\n Destructor of graphstore:";
     cout << "\n memory deleted";
 }
-void graphstore :: add_picture(graph picture)
+void graphstore::operator+=(const graph &picture)
 {
     if (num_pictures < max_num_pictures)
         {
@@ -30,26 +30,74 @@ void graphstore :: add_picture(graph picture)
             num_pictures++;
         }
 }
+void graphstore::add_picture(graph new_graph)
+{
+    if (num_pictures < max_num_pictures)
+        {
+            gr[num_pictures] = new_graph;
+            num_pictures++;
+        }
+}
+void graphstore::add_compare_picture(graph new_graph)
+{
+            picture_for_comparision = new_graph;
+}
+void graphstore::comparision(string filename)
+{
+    read_from_file_compare_picture(filename);
+    bool found=false;
+    for (int i=0;i<num_pictures;i++){
+        if (gr[i]==picture_for_comparision){
+            found=true;
+            if(found==true){
+                cout<<"\nWe have found a picture!"<<endl;
+                cout<<gr[i]<<endl;
+            }
+        }
+    }
+    if (!found)
+        cout<<"\nThere is no such pictures!"<<endl;
+}
 void graphstore :: read_from_file(string filename)
 {
-    ifstream infile;
-    infile.open(filename);
-    if (!infile.is_open())
+    ifstream file;
+    file.open(filename);
+    if (!file.is_open())
         {
             cout << "\n\n File don't exist!"<< endl;
             exit(1);
         }
     int N;
-    infile >> N;
-    infile.get();
+    file >> N;
+    file.get();
     for (int i=0; i<N; i++)
         {
             graph new_graph;
-            new_graph.set_mas(infile);
+            file>>new_graph;
             add_picture(new_graph);
         }
-    infile.close();
+    file.close();
     cout<< "\n Number of added pictures:"<< num_pictures;
+}
+void graphstore :: read_from_file_compare_picture(string filename)
+{
+    ifstream file;
+    file.open(filename);
+    if (!file.is_open())
+        {
+            cout << "\n\n File don't exist!"<< endl;
+            exit(1);
+        }
+    int N;
+    file >> N;
+    file.get();
+    for (int i=0; i<N; i++)
+        {
+            graph new_graph;
+            file>>new_graph;
+            add_compare_picture(new_graph);
+        }
+    file.close();
 }
 void graphstore :: write_to_file (string filename)
 {
@@ -58,19 +106,20 @@ void graphstore :: write_to_file (string filename)
     outfile << num_pictures << endl;
     for (int i=0;i<num_pictures;i++)
         {
-            gr[i].get_into(outfile);
+            outfile<<gr[i];
         }
     outfile.close();
     cout << "\nnumber of writed pictures: "<< num_pictures;
 }
-void graphstore :: display_all()
+ostream& operator<<(ostream& stream, const graphstore& astore)
 {
     cout << "\n\nAll pictures: \n";
-    for (int i=0;i<num_pictures;i++)
+    for (int i=0;i<astore.num_pictures;i++)
         {
-            if (gr[i].get_name()!=string())
-                gr[i].out();
+            if (astore.gr[i].get_name()!=string())
+                stream << astore.gr[i]<<endl;
         }
+        return stream;
 }
 void graphstore::find(char x)
 {
@@ -86,7 +135,7 @@ void graphstore::find(char x)
             exit(1);
         }
     cout << "\n";
-    if (temp==1)
+    if (temp==1){
         for (int i=0;i<10;i++)
             {
                 u1=gr[i].get_name();
@@ -94,8 +143,11 @@ void graphstore::find(char x)
                 if (u2==x)
                     {
                         gr[i].out();
+                        count+=1;
                     }
             }
+        if (count==0) cout << "NET TAKIH KARTINOK!";
+    }
     else if (temp==2)
         {
             for (int i=0;i<10;i++)
@@ -108,7 +160,7 @@ void graphstore::find(char x)
                 }
 
             }
-            if (count==0) cout << "NET TAKIH FAILOV!";
+            if (count==0) cout << "NET TAKIH KARTINOK!";
         }
 }
 void graphstore ::  delete_picture(int number)
@@ -120,3 +172,4 @@ void graphstore :: seq()
 {
     gr[0].pl(gr);
 }
+
