@@ -1,0 +1,41 @@
+10
+deer
+1243 jpg
+124 244 180 32 Canada
+John M.
+lion
+2148 bmp
+130 210 190 32 Kongo
+Mary B.
+ant
+1800 jpeg
+86 212 160 64 Russia
+Anton J.
+lynx
+2143 jpg
+180 210 180 32 USA
+William Y.
+eagle
+3808 bmp
+125 300 100 64 Russia
+ALina H.
+wall
+9123 jpg
+10800 2200 260 32 England
+Anna U.
+soccer
+13253 bmp
+1080 480 230 64 USA
+Mickle R.
+pubg
+4565 jpeg
+1920 1080 200 64 Arabia
+Mohammad H.
+notepad
+13222 gif
+2440 1080 210 128 Japan
+Kisuke K.
+logo
+1024 svg
+64 64 1080 128 India
+Rotem M.
